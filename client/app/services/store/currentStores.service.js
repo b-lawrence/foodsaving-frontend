@@ -9,36 +9,47 @@
 */
 export default class CurrentStores {
 
-  constructor() {
+  constructor($rootScope) {
+    "ngInject";
     Object.assign(this, {
       list: [],
-      selected: {}
+      selected: {},
+      $rootScope
     });
   }
 
   set(list) {
     angular.copy(list, this.list);
+    this.$notify();
     return this.list;
   }
 
   setSelected(store) {
     angular.copy(store, this.selected);
+    this.$notify();
     return this.selected;
   }
 
   pushItem(item) {
     this.list.push(item);
+    this.$notify();
     return item;
   }
 
   replaceItem(item) {
     let i = this.list.findIndex((e) => e.id === item.id);
     this.list[i] = item;
+    this.$notify();
     return item;
   }
 
   clear() {
     angular.copy([], this.list);
+    this.$notify();
+  }
+
+  $notify() {
+    this.$rootScope.$broadcast("CurrentStoresChange");
   }
 
 }
