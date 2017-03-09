@@ -1,23 +1,26 @@
 class StoreMapController {
-  constructor() {
+  constructor(CurrentStores) {
     "ngInject";
     Object.assign(this, {
       markers: {},
       bounds: {},
       defaults: {
         scrollWheelZoom: false
-      }
+      },
+      lastVersion: -1,
+      CurrentStores
     });
   }
 
-  $onChanges(changes) {
-    if (changes.storeList) {
+  $doCheck() {
+    if (this.CurrentStores.version.val !== this.lastVersion) {
+      this.lastVersion = this.CurrentStores.version.val;
       this.update();
     }
   }
 
   update() {
-    this.markers = this.getMarkers(this.storeList);
+    this.markers = this.getMarkers(this.CurrentStores.list);
     if (this.hasMarkers()) {
       let bounds = new L.latLngBounds(Object.values(this.markers)).pad(0.2); // eslint-disable-line
       this.bounds = {

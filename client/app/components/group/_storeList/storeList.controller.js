@@ -15,10 +15,7 @@ class StoreListController {
 
   $onChanges(changes) {
     if (changes.groupId && angular.isDefined(changes.groupId.currentValue)) {
-      this.Store.listByGroupId(changes.groupId.currentValue).then((data) => {
-        this.CurrentStores.set(data);
-        this.storeList = angular.copy(this.CurrentStores.list);
-      });
+      this.Store.listByGroupId(changes.groupId.currentValue).then((data) => this.CurrentStores.set(data));
     }
   }
 
